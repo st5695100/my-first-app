@@ -14,7 +14,6 @@ if "ans4_val" not in st.session_state:
     st.session_state.ans4_val = ""
 
 
-
 # 📌 ฟังก์ชันเคลียร์ค่าเมื่อกดปุ่มเริ่มใหม่
 def reset_game():
     st.session_state.ans1_val = ""  # เคลียร์ค่าช่องข้อ 1
@@ -34,10 +33,10 @@ def show_result_dialog(ans1, ans2, ans3, ans4):
     score = 0
 
     u_ans1 = ans1.strip().lower()
-    u_ans2 = ans2.strip().lower() 
+    u_ans2 = ans2.strip().lower()
     u_ans3 = ans3.strip().lower()
     u_ans4 = ans4.strip().lower()
-  
+
     # ตรวจข้อ 1
     if u_ans1 == "apple":
         st.success("✅ ข้อ 1: ถูกต้อง")
@@ -51,9 +50,9 @@ def show_result_dialog(ans1, ans2, ans3, ans4):
         score += 1
     else:
         st.error(f"❌ ข้อ 2: ยังไม่ถูกต้อง (คุณตอบ '{u_ans2}')")
-  
+
     # ตรวจข้อ 3
-     if u_ans3 == "coconut":
+    if u_ans3 == "coconut":
         st.success("✅ ข้อ 3: ถูกต้อง")
         score += 1
     else:
@@ -66,11 +65,10 @@ def show_result_dialog(ans1, ans2, ans3, ans4):
     else:
         st.error(f"❌ ข้อ 4: ยังไม่ถูกต้อง (คุณตอบ '{u_ans4}')")
 
-    # ✏️ [พื้นที่สำหรับนักเรียน]: เพิ่มตรวจข้อ 3, 4 ตรงนี้
-
     st.info(f"🏆 ได้คะแนนรวม: {score} คะแนน")
 
-    if score == 2:
+    # ปรับเงื่อนไขชนะเป็น 4 คะแนน (มี 4 ข้อ)
+    if score == 4:
         st.success("🎉 You win!")
     else:
         st.error("💀 You lose!")
@@ -93,7 +91,7 @@ if "start" in st.session_state and not st.session_state.get("is_ended", False):
 
 st.divider()
 
-# 3. ช่องรับคำตอบ (ใช้ value ผูกกับตัวแปรตรงๆ เพื่อสั่งเคลียร์ได้)
+# 3. ช่องรับคำตอบ (แก้ไขชื่อตัวแปร ans3, ans4 ไม่ให้ซ้ำ)
 ans1 = st.text_input(
     "ข้อ 1: An `a _ _ l e` a day keeps the doctor away. 🍎",
     value=st.session_state.ans1_val,
@@ -102,11 +100,11 @@ ans2 = st.text_input(
     "ข้อ 2: Cats love to eat `f _ s h`. 🐟",
     value=st.session_state.ans2_val,
 )
-ans1 = st.text_input(
+ans3 = st.text_input(
     "ข้อ 3: There are `c _ c _ n _ t` on the tree near the beach. 🥥",
     value=st.session_state.ans3_val,
 )
-ans2 = st.text_input(
+ans4 = st.text_input(
     "ข้อ 4: A 'l _ _ o n' are yellow and have a sour taste.🍋 ",
     value=st.session_state.ans4_val,
 )
@@ -116,9 +114,6 @@ st.session_state.ans1_val = ans1
 st.session_state.ans2_val = ans2
 st.session_state.ans3_val = ans3
 st.session_state.ans4_val = ans4
-
-# ✏️ [พื้นที่สำหรับนักเรียน]: เพิ่มข้อ 3, 4 ตรงนี้
-
 
 # 4. ปุ่มส่งคำตอบ
 if "start" in st.session_state and not st.session_state.get("is_ended", False):
@@ -131,8 +126,12 @@ if "start" in st.session_state and not st.session_state.get("is_ended", False):
 
 # 5. แสดง Dialog ผลลัพธ์
 if st.session_state.get("is_ended", False):
-    show_result_dialog(ans1, ans2, ans3, ans4)
+    show_result_dialog(
+        st.session_state.ans1_val,
+        st.session_state.ans2_val,
+        st.session_state.ans3_val,
+        st.session_state.ans4_val,
+    )
 
 st.divider()
 st.write("นางสาวพิมพ์นิภา คิดการงาน เลขที่ 41 ม.4/17")
-
